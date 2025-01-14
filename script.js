@@ -21,7 +21,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
 
     const token = document.getElementById('githubToken').value.trim();
     const newContent = document.getElementById('content').value.trim();
-    const owner = 'davudsedft';
+    const owner = 'purnett';
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repoName}/contents/${filePath}`;
 
@@ -121,8 +121,8 @@ document.getElementById('deleteButton').addEventListener('click', async function
 
         const fileData = await response.json();
 
-        const updateResponse = await fetch(apiUrl, {
-            method: 'DELETE',
+        const deleteResponse = await fetch(apiUrl, {
+            method: 'PUT',
             headers: {
                 'Authorization': `token ${token}`,
                 'Accept': 'application/vnd.github.v3+json',
@@ -130,17 +130,18 @@ document.getElementById('deleteButton').addEventListener('click', async function
             },
             body: JSON.stringify({
                 message: `Deleting contents of ${filePath} via web form`,
+                content: btoa(''),
                 sha: fileData.sha
             })
         });
 
-        if (updateResponse.ok) {
+        if (deleteResponse.ok) {
             document.getElementById('message').textContent = `${filePath} با موفقیت حذف شد!`;
             setTimeout(() => {
                 window.location.href = window.location.href;
             }, 2000);
         } else {
-            const errorData = await updateResponse.json();
+            const errorData = await deleteResponse.json();
             document.getElementById('message').textContent = `خطایی رخ داده است در ${filePath}: ` + errorData.message;
         }
     } catch (error) {
