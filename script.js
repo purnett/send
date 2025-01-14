@@ -21,7 +21,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
 
     const token = document.getElementById('githubToken').value.trim();
     const newContent = document.getElementById('content').value.trim();
-    const owner = 'purnett';
+    const owner = 'davudsedft';
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repoName}/contents/${filePath}`;
 
@@ -122,7 +122,7 @@ document.getElementById('deleteButton').addEventListener('click', async function
         const fileData = await response.json();
 
         const updateResponse = await fetch(apiUrl, {
-            method: 'PUT',
+            method: 'DELETE',
             headers: {
                 'Authorization': `token ${token}`,
                 'Accept': 'application/vnd.github.v3+json',
@@ -130,7 +130,6 @@ document.getElementById('deleteButton').addEventListener('click', async function
             },
             body: JSON.stringify({
                 message: `Deleting contents of ${filePath} via web form`,
-                content: btoa(''),
                 sha: fileData.sha
             })
         });
